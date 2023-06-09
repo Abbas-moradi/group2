@@ -76,12 +76,20 @@ def user_update(username, user: UserUpdate, current_user: str = Depends(get_curr
     user_storage_update = dict(user)
     user_id = return_user_id(username)
     storage.collection_user.update_one({"_id": user_id}, {"$set": {**user_storage_update}})
-    return {str(user_id): "User has been update"}
+    return {str(user_id): "User has been update..."}
 
 
 @user_router.delete("/")
-def user_delete():
-    pass
+def user_delete(username, current_user: str = Depends(get_current_user)):
+    if not current_user["role"].lower() == "admin":
+        raise HTTPException(status.HTTP_403_FORBIDDEN, detail="user is not admin...")
+    if not user_name_exists(username):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User has not been exists...")
+    if current_user["sub"] == username:
+        raise HTTPException(status.HTTP_403_FORBIDDEN, detail="can not delete your self...")
+    user_id = return_user_id(username)
+    storage.collection_user.delete_one({"_id": user_id})
+    return {str(user_id): "User has been deleted..."}
 
 
 

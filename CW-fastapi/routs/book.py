@@ -16,7 +16,10 @@ book_router = APIRouter(prefix="/books", tags=["Book"])
 
 @book_router.get("/")
 def get_all_book():
-    pass
+    repository = []
+    for book in storage.collection_book.find({}):
+        repository.append(book)
+    return repository
 
 
 @book_router.get("/search")
