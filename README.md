@@ -1,1 +1,1 @@
-# test-group2
+# fastapi class work
