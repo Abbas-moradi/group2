@@ -13,3 +13,4 @@ def return_book_id(book_id: str) -> str:
     if not book_id[0]['book_id']:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="book not found.")
     return book_id[0]['book_id']
+
