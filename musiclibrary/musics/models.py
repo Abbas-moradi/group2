@@ -6,6 +6,9 @@ class Artist(models.Model):
     genre = models.CharField(max_length=50)
     bio = models.TextField()
 
+    def __str__(self):
+        return self.name
+
 
 class Album(models.Model):
     title = models.CharField(unique=True, max_length=70)
@@ -14,10 +17,12 @@ class Album(models.Model):
     cover_image = models.ImageField(upload_to="media/")
     description = models.TextField()
 
+    def __str__(self):
+        return self.title
 
 class Song(models.Model):
     title = models.CharField(max_length=70)
-    album = models.ManyToManyField(Album, on_delete=models.CASCADE)
+    album = models.ForeignKey(Album, on_delete=models.CASCADE)
     duration = models.DurationField()
     track_number = models.PositiveIntegerField()
     lyrics = models.TextField()
